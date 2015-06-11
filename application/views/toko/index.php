@@ -25,22 +25,16 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Title</a>
+				<a class="navbar-brand" href="<?php echo site_url(); ?>">Dumet Store</a>
 			</div>
 		
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Link</a></li>
-					<li><a href="#">Link</a></li>
+					<li class="active"><a href="<?php echo site_url() ?>"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
+					<li class=""><a href="<?php echo site_url() ?>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Basket</a></li>
 				</ul>
-				<form class="navbar-form navbar-left" role="search">
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Search">
-					</div>
-					<button type="submit" class="btn btn-default">Submit</button>
-				</form>
-				<ul class="nav navbar-nav navbar-right">
+				<!-- <ul class="nav navbar-nav navbar-right">
 					<li><a href="#">Link</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -51,7 +45,7 @@
 							<li><a href="#">Separated link</a></li>
 						</ul>
 					</li>
-				</ul>
+				</ul> -->
 			</div><!-- /.navbar-collapse -->
 		</nav>
 
