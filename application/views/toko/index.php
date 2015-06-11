@@ -51,18 +51,46 @@
 
 
 		<div class="container">
-			<button type="button" class="btn btn-success">button</button>
+		<?php if ($row->num_rows() > 0): ?>
+			<?php foreach ($row->result() as $key => $value): ?>
+				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+					<div class="panel panel-primary">
+						  <div class="panel-heading">
+								<h3 class="panel-title"><?php echo $value->title; ?></h3>
+						  </div>
+						  <div class="panel-body">
+						  	<img src="<?php echo $value->image; ?>" class="img-responsive" alt="Image">
+						  	<hr>
+								<blackquote><?php echo word_limiter($value->description,22) ?></blackquote>
+								Rp. <?php echo number_format($value->price,0,".",".") ?>
+						  </div>
+						  <div class="panel-footer">
+								<button type="button" class="btn btn-success btn<?php echo $value->id ?>"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add to chart</button>
+								<button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>More...</button>
+						  </div>
+						  	<script type="text/javascript">
+								jQuery(document).ready(function($) {
+									// $(".btn<?php echo $value->id ?>").click(function(event) {
+									// 	$(this)
+									// 		.clone()
+									// 		.appendTo('absolute')
+									// 		.css({
+									// 			position: 'absolute',
+									// 			top: $(this).offset().
+									// 		});
+									// });
+								});
+							</script>
+					</div>
+				</div>
+			<?php endforeach ?>
+		<?php endif ?>
 		</div>
 		<!-- jQuery -->
 		<script src="//code.jquery.com/jquery.js"></script>
 		<!-- Bootstrap JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-		<script type="text/javascript">
-		jQuery(document).ready(function($) {
-			
-		});
 		
-		</script>
 	</body>
 </html>
