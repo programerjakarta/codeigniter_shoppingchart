@@ -13,4 +13,9 @@ class Toko extends CI_Controller {
 	{
 		$this->load->view('toko/index',array('row' => $this->db->order_by('title','asc')->get('depkeu_product')));
 	}
+
+	function beli()
+	{
+		
+	}
 }

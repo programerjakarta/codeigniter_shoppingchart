@@ -87,8 +87,8 @@
 										Rp. <?php echo number_format($value->price,0,".",".") ?>
 						  			</div>
 						  			<div class="modal-footer">
-						  				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						  				<button type="button" class="btn btn-primary">Checkout</button>
+						  				<button id="<?php echo $value->id ?>" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						  				<a class="btn btn-default" href="<?php echo site_url('toko/keranjang'); ?>" role="button">Check out</a>
 						  			</div>
 						  		</div>
 						  	</div>
@@ -117,6 +117,22 @@
 													keyboard: false,
 												});
 											});
+
+											$.ajax({
+												url: '<?php echo site_url("toko/beli") ?>',
+												type: 'POST',
+												data: {id: $(".btn<?php echo $value->id ?>").attr("id")},
+											})
+											.done(function() {
+
+											})
+											.fail(function() {
+												console.log("error");
+											})
+											.always(function() {
+												console.log("complete");
+											});
+											
 									});
 								});
 							</script>
