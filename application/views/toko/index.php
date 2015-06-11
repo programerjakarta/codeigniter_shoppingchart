@@ -14,6 +14,10 @@
 		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
+		<script src="//code.jquery.com/jquery.js"></script>
+		<!-- Bootstrap JavaScript -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 	</head>
 	<body>
 		<nav class="navbar navbar-default" role="navigation">
@@ -32,7 +36,7 @@
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="<?php echo site_url() ?>"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
-					<li class=""><a href="<?php echo site_url() ?>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Basket</a></li>
+					<li class=""><a id="cart" href="<?php echo site_url() ?>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Basket</a> <span class="badge">0</span></li>
 				</ul>
 				<!-- <ul class="nav navbar-nav navbar-right">
 					<li><a href="#">Link</a></li>
@@ -70,27 +74,35 @@
 						  </div>
 						  	<script type="text/javascript">
 								jQuery(document).ready(function($) {
-									// $(".btn<?php echo $value->id ?>").click(function(event) {
-									// 	$(this)
-									// 		.clone()
-									// 		.appendTo('absolute')
-									// 		.css({
-									// 			position: 'absolute',
-									// 			top: $(this).offset().
-									// 		});
-									// });
+									$(".btn<?php echo $value->id ?>").click(function(event) {
+										$(this)
+											.clone()
+											.appendTo('body')
+											.css({
+												position: 'absolute',
+												top: $(this).offset().top,
+												left: $(this).offset().left,
+												opacity:100
+											})
+											.animate({
+												top: $(".badge").offset().top,
+												left: $(".badge").offset().left,
+												opacity: 0.5 
+											},1000,function(){
+												$(this).fadeOut();
+												$('.badge').effect('highlight','',3000);
+											});
+									});
 								});
 							</script>
+
 					</div>
 				</div>
 			<?php endforeach ?>
 		<?php endif ?>
 		</div>
 		<!-- jQuery -->
-		<script src="//code.jquery.com/jquery.js"></script>
-		<!-- Bootstrap JavaScript -->
-		<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+		
 		
 	</body>
 </html>
