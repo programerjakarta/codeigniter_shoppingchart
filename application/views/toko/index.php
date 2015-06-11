@@ -87,7 +87,7 @@
 										Rp. <?php echo number_format($value->price,0,".",".") ?>
 						  			</div>
 						  			<div class="modal-footer">
-						  				<button id="<?php echo $value->id ?>" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						  				<button id="<?php echo $value->id ?>" type="button" class="buy<?php echo $value->id ?> btn btn-default" data-dismiss="modal">Close</button>
 						  				<a class="btn btn-default" href="<?php echo site_url('toko/keranjang'); ?>" role="button">Check out</a>
 						  			</div>
 						  		</div>
@@ -121,10 +121,12 @@
 											$.ajax({
 												url: '<?php echo site_url("toko/beli") ?>',
 												type: 'POST',
-												data: {id: $(".btn<?php echo $value->id ?>").attr("id")},
+												data: {id: $(".buy<?php echo $value->id ?>").attr("id")},
 											})
-											.done(function() {
-
+											.done(function(str) {
+												if (str) {
+													$('.badge').effect("highlight","",3000).text(str);
+												};
 											})
 											.fail(function() {
 												console.log("error");

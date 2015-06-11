@@ -16,12 +16,14 @@ class Toko extends CI_Controller {
 
 	function beli()
 	{
-		if ($this->input->post('id',TRUE)) {
-			$row = $this->db->where('depkeu_product', array('id' => $this->input->post('id',TRUE)));
+		if ($this->input->post('id') !== null) {
 
+			$query = $this->db->query('select * from depkeu_product where id = '.$this->input->post('id').' ');
+			$row = $query->row();
+			// var_dump($result);
 			$data = array('id' => $row->id ,
 				'name' => $row->title ,
-				'qty' => $row->1 ,
+				'qty' => 1 ,
 				'price' => $row->price ,
 				'options' => array('image'=>$row->image) ,
 			 );
