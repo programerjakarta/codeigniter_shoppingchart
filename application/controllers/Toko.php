@@ -16,6 +16,20 @@ class Toko extends CI_Controller {
 
 	function beli()
 	{
-		
+		if ($this->input->post('id',TRUE)) {
+			$row = $this->db->where('depkeu_product', array('id' => $this->input->post('id',TRUE)));
+
+			$data = array('id' => $row->id ,
+				'name' => $row->title ,
+				'qty' => $row->1 ,
+				'price' => $row->price ,
+				'options' => array('image'=>$row->image) ,
+			 );
+			
+			$this->cart->insert($data);
+			echo $this->cart->total_items();
+		} else {
+			redirect(base_url());
+		}
 	}
 }
