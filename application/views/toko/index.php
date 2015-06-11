@@ -36,7 +36,7 @@
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="<?php echo site_url() ?>"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
-					<li class=""><a id="cart" href="<?php echo site_url() ?>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Basket</a> <span class="badge">0</span></li>
+					<li class=""><a id="cart" href="<?php echo site_url() ?>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Basket <span class="badge">0</span></a></li>
 				</ul>
 				<!-- <ul class="nav navbar-nav navbar-right">
 					<li><a href="#">Link</a></li>
@@ -72,6 +72,28 @@
 								<button type="button" class="btn btn-success btn<?php echo $value->id ?>"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add to chart</button>
 								<button type="button" class="btn btn-warning"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>More...</button>
 						  </div>
+
+						  <div class="modal fade" id="modal<?php echo $value->id ?>">
+						  	<div class="modal-dialog">
+						  		<div class="modal-content">
+						  			<div class="modal-header">
+						  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						  				<h4 class="modal-title"><?php echo $value->title; ?></h4>
+						  			</div>
+						  			<div class="modal-body">
+						  				<img src="<?php echo $value->image; ?>" class="img-responsive" alt="Image">
+									  	<hr>
+										<blackquote><?php echo word_limiter($value->description,22) ?></blackquote>
+										Rp. <?php echo number_format($value->price,0,".",".") ?>
+						  			</div>
+						  			<div class="modal-footer">
+						  				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						  				<button type="button" class="btn btn-primary">Checkout</button>
+						  			</div>
+						  		</div>
+						  	</div>
+						  </div>
+
 						  	<script type="text/javascript">
 								jQuery(document).ready(function($) {
 									$(".btn<?php echo $value->id ?>").click(function(event) {
@@ -91,6 +113,9 @@
 											},1000,function(){
 												$(this).fadeOut();
 												$('.badge').effect('highlight','',3000);
+												$('#modal<?php echo $value->id ?>').modal({
+													keyboard: false,
+												});
 											});
 									});
 								});
