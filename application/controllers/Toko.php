@@ -34,4 +34,9 @@ class Toko extends CI_Controller {
 			redirect(base_url());
 		}
 	}
+
+	function keranjang()
+	{
+		$this->load->view('toko/keranjang');
+	}
 }
