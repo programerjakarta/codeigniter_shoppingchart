@@ -49,4 +49,16 @@ class Toko extends CI_Controller {
 			redirect('toko/keranjang');
 		}
 	}
+
+	function ubah()
+	{
+		if ($this->input->post('get_rowid')) {
+			$data = array('rowid' => $this->input->post('get_rowid', TRUE), 'qty' => $this->input->post('get_qty',TRUE));
+			$this->cart->update($data);
+
+			echo $this->cart->total()."/".$this->cart->total_items()."/".$this->input->post('get_qty',TRUE)."/".$this->input->post('get_price',TRUE);
+		} else {
+			redirect('toko/keranjang');
+		}
+	}
 }

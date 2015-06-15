@@ -70,16 +70,79 @@
 							<tr id="tr<?php echo $value["id"] ?>">
 								<td><?php echo $i ?>.</td>
 								<td><?php echo $value["name"] ?><hr><img src="<?php echo $value['options']['image']; ?>" width="96"></td>
-								<td class="text-right"><input type="text" id="qty<?php echo $value["id"] ?>" class="form-control" maxlength="3" value="<?php echo $value['qty']; ?>" size="5"></td>
+								<td class="text-right"><input type="text" name="<?php echo $value["rowid"] ?>" id="<?php echo $value["rowid"] ?>" class="input<?php echo $value["id"] ?> form-control" maxlength="3" value="<?php echo $value['qty']; ?>" size="5"><code class="code<?php echo $value["id"] ?>"></code></td>
+								
 								<td class="text-right"><?php echo number_format($value['price'],0,",",".") ?></td>
-								<td class="text-right"><?php echo number_format($value['qty']*$value['price'],0,",",".") ?></td>
+								<td class="hasilUbah<?php echo $value["id"] ?> text-right"><?php echo number_format($value['qty']*$value['price'],0,",",".") ?></td>
 								<td class="text-right">
 									<button type="button" class="btn btn-danger btn<?php echo $value["id"] ?>" id="<?php echo $value["rowid"] ?>">
 										<span class="glyphicon glyphicon-trash class="text-right"" aria-hidden="true"></span>
 									</button>
 								</td>
 							</tr>
+
+							<div class="modal fade" id="modal<?php echo $value['id'] ?>">
+						  	<div class="modal-dialog">
+						  		<div class="modal-content">
+						  			<div class="modal-header">
+						  				<h4 class="modal-title">Info</h4>
+						  			</div>
+						  			<div class="modal-body">
+						  				<span class="glyphicon glyphicon-info" aria-hidden="true"></span>Kuantitas tidak boleh kosong
+						  			</div>
+						  			<div class="modal-footer">
+						  				<button id="<?php echo $value['id'] ?>"  type="button" class="close<?php echo $value['id'] ?> btn btn-default" data-dismiss="modal">Close</button>
+						  			</div>
+						  		</div>
+						  	</div>
+						  </div>
 							<script type="text/javascript">
+							$(document).on('hide.bs.modal', '#modal<?php echo $value["id"] ?>', function(event) {
+								// event.preventDefault();
+								/* Act on the event */
+								var getOldQty = $(".close<?php echo $value["id"] ?>").attr('id');
+								$(".input<?php echo $value["id"] ?>").effect("highlight","",3000).val(getOldQty);
+							});
+
+								/*************Ubah********************/
+								$(".input<?php echo $value["id"] ?>").keyup(function(event) {
+									var getNewQty = $(this).val();
+
+									if (getNewQty == "" || getNewQty == "0") {
+										$("#modal<?php echo $value["id"] ?>").modal({
+											keyboard: true,
+											backdrop:"static"
+										});
+									}else {
+										$.ajax({
+											url: '<?php echo site_url('toko/ubah') ?>',
+											type: 'POST',
+											data: {
+												get_rowid : $(".input<?php echo $value["id"] ?>").attr('id'),
+												get_qty : getNewQty,
+												get_price : $(".input<?php echo $value["id"] ?>").attr('name'),
+											},
+										})
+										.done(function(str) {
+
+											var data_array = str.split("/");
+
+											$('.badge').effect("highlight","",3000).text(data_array[1]);
+											$('.subtotal').effect("highlight","",3000).html(rupiah(data_array[0]));
+											$('.hasilUbah<?php echo $value["id"] ?>').effect("highlight","",3000).html(rupiah(data_array[2]*data_array[3]));
+										})
+										.fail(function() {
+											console.log("error");
+										})
+										.always(function() {
+											console.log("complete");
+										});
+										
+									}
+
+								});
+
+								/*************Hapus********************/
 								$(".btn<?php echo $value["id"] ?>").click(function(event) {
 									$.ajax({
 										url: '<?php echo site_url("toko/hapus") ?>',
@@ -99,6 +162,9 @@
 									});
 								});
 							</script>
+
+						  
+
 						<?php $i++; endforeach ?>
 						<tr>
 							<th></th>
