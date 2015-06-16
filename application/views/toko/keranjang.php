@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>toko</title>
+		<title>Keranjang Belanja</title>
 		<!-- Bootstrap CSS -->
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -18,7 +18,7 @@
 		<!-- Bootstrap JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-		<style type="text/css">.container{margin-top:90px}</style>
+		<style type="text/css">.container{margin-top:90px;}</style>
 		<script type="text/javascript">
 		// http://goo.gl/tnBP7L
 		function rupiah(nStr) {
@@ -32,6 +32,24 @@
 		    }
 		    return x1 + x2;
 		}
+
+		$(document).ready(function() {
+			$("#destroy").click(function(event) {
+				$.ajax({
+					url: '<?php echo site_url("toko/hapus_semua") ?>',
+					type: 'POST',
+					data: {submit: '1'},
+				})
+				.done(function() {
+					$('#badge').effect("highlight","",3000).text('0');
+					$('.tr').fadeOut("highlight","",3000);
+					$('tbody').effect("highlight","",3000).html('<tr><td colspan="6">Tidak ada product yang dibeli</td></tr>');
+				})
+				.fail(function() {
+					console.log("error");
+				});
+			});
+		});
 		</script>
 	</head>
 	<body>
@@ -48,7 +66,29 @@
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav">
 					<li class=""><a href="<?php echo site_url() ?>"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</a></li>
-					<li class="active"><a id="cart" href="<?php echo site_url('toko/keranjang') ?>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Basket <span class="badge"><?php echo $this->cart->total_items(); ?></span></a></li>
+					<li class="active"><a id="cart" href="<?php echo site_url('toko/keranjang') ?>"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Basket <span class="badge" id="badge"><?php echo $this->cart->total_items(); ?></span></a></li>
+					<?php if ($this->session->userdata("logged_in")): ?>
+						<li>
+							<a href="<?php echo site_url("toko/checkout") ?>">
+								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Checkout</span>
+							</a>
+						</li>
+						<li>
+							<a href="<?php echo site_url("toko/logout") ?>">
+								<span class="glyphicon glyphicon-sign-out" aria-hidden="true"></span> Logout <span class="badge"><?php echo $this->session->userdata("username") ?></span>
+							</a>
+						</li>
+					<?php else: ?>
+						<?php if ($this->cart->total_items() > 0): ?>
+							<li id="menu">
+								<a href="<?php echo site_url("toko/login") ?>">
+									<span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login
+								</a>
+							</li>
+						<?php else: ?>
+							<li id="menu"></li>
+						<?php endif ?>
+					<?php endif ?>
 				</ul>
 			</div>
 		</nav>
@@ -68,7 +108,7 @@
 				<tbody>
 					<?php if ($this->cart->total() > 0): ?>
 						<?php $i = 1; foreach ($this->cart->contents() as $key => $value): ?>
-							<tr id="tr<?php echo $value["id"] ?>">
+							<tr class="tr" id="tr<?php echo $value["id"] ?>">
 								<td><?php echo $i ?>.</td>
 								<td><?php echo $value["name"] ?></td>
 								<td><img src="<?php echo $value['options']['image']; ?>" width="56"></td>
@@ -129,7 +169,7 @@
 										.done(function(str) {
 											var data_array = str.split("/");
 
-											$('.badge').effect("highlight","",3000).text(data_array[1]);
+											$('#badge').effect("highlight","",3000).text(data_array[1]);
 											$('.subtotal').effect("highlight","",3000).html(rupiah(data_array[0]));
 											$('.hasilUbah<?php echo $value["id"] ?>').effect("highlight","",3000).html(rupiah(data_array[2]*data_array[3]));
 										}).always(function() {
@@ -149,7 +189,7 @@
 
 										var data_array = str.split("/");
 
-										$('.badge').effect("highlight","",3000).text(data_array[1]);
+										$('#badge').effect("highlight","",3000).text(data_array[1]);
 										$('.subtotal').effect("highlight","",3000).html(rupiah(data_array[0]));
 									})
 									.fail(function() {
@@ -158,19 +198,21 @@
 								});
 							</script>
 						<?php $i++; endforeach ?>
-						<tr>
+						<tr class="tr">
 							<th></th>
 							<th></th>
 							<th></th>
 							<th></th>
 							<th class="text-right">Subtotal</th>
 							<th class="text-right subtotal"><?php echo number_format($this->cart->total(),0,".",".") ?></th>
-							<th></th>
+							<th class="text-right">
+								<button type="button" class="btn btn-danger" id="destroy">
+									<span class="glyphicon glyphicon-remove class="text-right"" aria-hidden="true"></span>
+								</button>
+							</th>
 						</tr>
 					<?php else : ?>
-						<tr>
-							<td colspan="6">Tidak ada product yang dibeli</td>
-						</tr>
+						<tr><td colspan="6">Tidak ada product yang dibeli</td></tr>
 					<?php endif ?>
 				</tbody>
 			</table>

@@ -93,17 +93,20 @@
 		<div class="container">
 		<?php if ($row->num_rows() > 0): ?>
 			<?php foreach ($row->result() as $key => $value): ?>
-				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 					<div class="panel panel-primary">
 						  <div class="panel-heading">
 								<h3 class="panel-title"><?php echo $value->title; ?></h3>
 						  </div>
 						  <div class="panel-body">
-						  	<img src="<?php echo $value->image; ?>" class="img-responsive" alt="Image">
-						  	<hr>
-								<blackquote><?php echo word_limiter($value->description,8) ?></blackquote>
+						  	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+						  		<img src="<?php echo $value->image; ?>" class="img-responsive" alt="Image">
+						  	</div>
+						  	<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+						  		<blackquote><?php echo $value->description ?></blackquote>
 								<hr>
 								Rp. <?php echo number_format($value->price,0,".",".") ?>
+						  	</div>
 						  </div>
 						  <div class="panel-footer">
 								<button type="button" class="btn-xs btn btn-success btn<?php echo $value->id ?>"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add to cart</button>
